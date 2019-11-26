@@ -332,6 +332,13 @@ public class User extends javax.swing.JFrame {
 //                tablex.setValueAt("", i, j);
 //            }
 //        }
+        System.out.println(list);
+        
+        for (int i = 0; i < tablex.getRowCount(); i++) {
+            for (int j = 0; j < tablex.getColumnCount(); j++) {
+                tablex.setValueAt("", i, j);
+            }
+        }
         for(ArrayList item:list){
             tablex.setValueAt(item.get(1),counter, 0);
             tablex.setValueAt(item.get(2), counter, 1);

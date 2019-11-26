@@ -70,7 +70,7 @@ public class Crud {
         try (Connection conn = this.connect();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             ResultSet rs = pstmt.executeQuery(sql);
-            if (rs.next()) {
+            while(rs.next()) {
                 int id = rs.getInt("id");
                 String str1 = rs.getString("firstname");
                 String str2 = rs.getString("middlename");
@@ -99,7 +99,7 @@ public class Crud {
         }
     }
     public void deleteAll(String id) throws ClassNotFoundException {
-        String sql = "DELETE FROM users WHERE id = ?";
+        String sql = "DELETE FROM users WHERE id= ?";
         try (Connection conn = this.connect();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, Integer.valueOf(id));
