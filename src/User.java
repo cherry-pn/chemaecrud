@@ -14,12 +14,15 @@ import java.util.logging.Logger;
  * @author 2ndyrGroupC
  */
 public class User extends javax.swing.JFrame {
+    //call the crud class 
     Crud db=new Crud();
+    // the list that contains the list of all users.This is the list connected to the search button in retrieving accounts
     ArrayList<ArrayList>list=new ArrayList();
     /**
      * Creates new form User
      */
     public User() {
+        //initializing components
         initComponents();
     }
 
@@ -273,25 +276,35 @@ public class User extends javax.swing.JFrame {
         lastname.setText(orig);    }//GEN-LAST:event_lastnameActionPerformed
 
     private void UPDATEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UPDATEActionPerformed
+        //get all the values in the input field if you want to update
+        // tobeUpdated1 is the value of username you want to update
         String tobeUpdated1=tobeUpdated.getText();
         String firstname1=firstname.getText();
         String middlename1=middlename.getText();
         String lastname1=lastname.getText();
         String email1=email.getText();
+        //temporary variables to hold the original value of account if the user did not input anything in the 
+        // input field while holding the value of input field if the getText() is not empty
         String tempFirstname="";
         String tempMiddlename="";
         String tempLastname="";
         String tempEmail="";
         try {
+            //the list  stores the values from db.retrieve()  
             list=db.retrieve();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
+        // for loop for all the values inside list 
         for(ArrayList item : list){
+           // for every values in list if the index one of that value is equal to the value 
+           //of the inputed value in tobeUpdated1 variable then it means that username exist and you can update it
             if(item.get(1).equals(tobeUpdated1)){
+                // if you did not input anything in the input field for firstname then the value will be the same
                 if(firstname1.isEmpty()){
                     tempFirstname=(String) item.get(1);
                 }else{
+                    //else the value will be updated  the same is true in the rest of if else
                     tempFirstname=firstname1;
                 }if(middlename1.isEmpty()){
                 tempMiddlename=(String)item.get(2);            
@@ -306,6 +319,7 @@ public class User extends javax.swing.JFrame {
                 }else{
                     tempEmail=email1;
                 }
+                // after updating the list the list  will be saved in the database
                 try {
                     db.updateAll( tobeUpdated1, tempFirstname,tempMiddlename, tempLastname, tempEmail);
                 } catch (ClassNotFoundException ex) {
@@ -321,8 +335,10 @@ public class User extends javax.swing.JFrame {
 
     private void searchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchMouseClicked
         // TODO add your handling code here:
+        // if you clicked the search button you initialise a counter
         int counter =0;
         try {
+            // you put the updated list of user from database in you arraylist in the topmost called list
             list=db.retrieve();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
@@ -333,13 +349,17 @@ public class User extends javax.swing.JFrame {
 //            }
 //        }
         System.out.println(list);
-        
+        //this makes the table empty every before putting values in it from arraylist
         for (int i = 0; i < tablex.getRowCount(); i++) {
             for (int j = 0; j < tablex.getColumnCount(); j++) {
                 tablex.setValueAt("", i, j);
             }
         }
+        //putting values in the tagble
         for(ArrayList item:list){
+            //item.get(1),etc are the values
+            // the counters determine the rows
+            // the the numbers 0,1,2,3 are the columns
             tablex.setValueAt(item.get(1),counter, 0);
             tablex.setValueAt(item.get(2), counter, 1);
             tablex.setValueAt(item.get(3), counter, 2);
@@ -351,9 +371,11 @@ public class User extends javax.swing.JFrame {
 
     private void DELETEMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DELETEMouseClicked
         // TODO add your handling code here:
-        
+        //get the value the inputfield
         String deletevalue=deleteField.getText();
+        // for every item in the list
         for(ArrayList item:list){
+            // if that item in the list equals to the value to be deleted then it will be deleted in the database
             if(item.get(1).equals(deletevalue)){
                 try {
                     db.deleteAll((String) item.get(0));
